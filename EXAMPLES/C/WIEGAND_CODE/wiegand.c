@@ -41,8 +41,10 @@ void _cb(int gpio, int level, uint32_t tick, void *user)
       }
       else
       {
-         wieg->bits++;
-         wieg->num <<= 1;
+         if(wieg->bits++ <= 32)
+         {
+            wieg->num <<= 1;
+         }
       }
 
       if (gpio == wieg->mygpio_0)
@@ -52,7 +54,10 @@ void _cb(int gpio, int level, uint32_t tick, void *user)
       else
       {
          wieg->code_timeout &= 1; /* clear gpio 1 timeout */
-         wieg->num |= 1;
+         if(wieg->bits <= 33)
+         {
+            wieg->num |= 1;
+         }
       }
    }
    else if (level == PI_TIMEOUT)
